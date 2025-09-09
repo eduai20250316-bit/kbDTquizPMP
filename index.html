@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="PMP 자격증 시험 준비를 위한 모바일 웹 퀴즈 앱">
+    <meta name="keywords" content="PMP, 자격증, 시험, 퀴즈, PMBOK">
+    <title>PMP 시험 준비 퀴즈 📚</title>
+    
+    <!-- PWA 메타 태그 -->
+    <meta name="theme-color" content="#2563eb">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="PMP 퀴즈">
+    
+    <!-- 파비콘 -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📚</text></svg>">
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="styles.css">
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="manifest.json">
+</head>
+<body>
+    <div id="app">
+        <!-- 로딩 화면 -->
+        <div id="loading-screen" class="screen active">
+            <div class="loading-container">
+                <div class="loading-spinner"></div>
+                <h2>📚 PMP 시험 준비 퀴즈</h2>
+                <p>PMBOK 7판 기반 문제로 구성되었습니다</p>
+                <div class="loading-progress">
+                    <div class="progress-bar"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 시작 화면 -->
+        <div id="start-screen" class="screen">
+            <div class="container">
+                <header class="header">
+                    <h1>🎯 PMP 시험 준비 퀴즈</h1>
+                    <p class="subtitle">프로젝트 관리 전문가 자격증 시험 대비</p>
+                </header>
+                
+                <div class="quiz-info">
+                    <div class="info-card">
+                        <div class="info-icon">📋</div>
+                        <div class="info-content">
+                            <h3>총 150문항</h3>
+                            <p>PMBOK 7판 기반 + 실무 상황 문제</p>
+                        </div>
+                    </div>
+                    
+                    <div class="info-card">
+                        <div class="info-icon">⏱️</div>
+                        <div class="info-content">
+                            <h3>시간 제한 없음</h3>
+                            <p>충분히 생각하고 답하세요</p>
+                        </div>
+                    </div>
+                    
+                    <div class="info-card">
+                        <div class="info-icon">🏆</div>
+                        <div class="info-content">
+                            <h3>상세한 해설</h3>
+                            <p>정답과 함께 학습 포인트 제공</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <button id="start-quiz-btn" class="btn btn-primary btn-large">
+                    🚀 퀴즈 시작하기
+                </button>
+                
+                <div class="footer-info">
+                    <p>💡 모든 문제는 실제 PMP 시험 유형을 반영합니다</p>
+                    <p>📱 모바일에 최적화된 인터페이스</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 퀴즈 화면 -->
+        <div id="quiz-screen" class="screen">
+            <div class="container">
+                <!-- 진행 상황 헤더 -->
+                <header class="quiz-header">
+                    <div class="progress-container">
+                        <div class="progress-bar-container">
+                            <div id="progress-bar" class="progress-bar"></div>
+                        </div>
+                        <div class="progress-text">
+                            <span id="current-question">1</span> / <span id="total-questions">30</span>
+                        </div>
+                    </div>
+                    
+                    <div class="score-container">
+                        <div class="score-item">
+                            <span class="score-label">정답</span>
+                            <span id="score" class="score-value">0</span>
+                        </div>
+                        <div class="score-item">
+                            <span class="score-label">정답률</span>
+                            <span id="accuracy" class="score-value">0%</span>
+                        </div>
+                    </div>
+                </header>
+
+                <!-- 문제 영역 -->
+                <div class="question-container">
+                    <div class="question-number">
+                        문제 <span id="question-number">1</span>
+                    </div>
+                    
+                    <div class="question-text" id="question-text">
+                        문제를 불러오는 중입니다...
+                    </div>
+                    
+                    <div class="options-container" id="options-container">
+                        <!-- 선택지들이 여기에 동적으로 생성됩니다 -->
+                    </div>
+                </div>
+
+                <!-- 답안 확인 버튼 -->
+                <div class="action-buttons">
+                    <button id="submit-answer-btn" class="btn btn-primary btn-large" disabled>
+                        ✓ 답안 확인하기
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 답안 결과 화면 -->
+        <div id="result-screen" class="screen">
+            <div class="container">
+                <div class="result-container">
+                    <div id="result-icon" class="result-icon">
+                        <!-- 정답/오답 아이콘 -->
+                    </div>
+                    
+                    <div id="result-message" class="result-message">
+                        <!-- 결과 메시지 -->
+                    </div>
+                    
+                    <div class="answer-details">
+                        <div class="answer-section">
+                            <h4>📝 선택한 답:</h4>
+                            <div id="user-answer" class="answer-text"></div>
+                        </div>
+                        
+                        <div class="answer-section">
+                            <h4>✅ 정답:</h4>
+                            <div id="correct-answer" class="answer-text correct"></div>
+                        </div>
+                    </div>
+                    
+                    <button id="show-explanation-btn" class="btn btn-secondary btn-large">
+                        📖 해설 보기
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 해설 화면 -->
+        <div id="explanation-screen" class="screen">
+            <div class="container">
+                <div class="explanation-container">
+                    <div class="explanation-header">
+                        <h3>📖 문제 해설</h3>
+                    </div>
+                    
+                    <div class="explanation-content">
+                        <div class="explanation-section">
+                            <h4>💡 해설</h4>
+                            <div id="explanation-text" class="explanation-text"></div>
+                        </div>
+                        
+                        <div class="explanation-section">
+                            <h4>📚 참고 자료</h4>
+                            <div id="reference-text" class="reference-text"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="action-buttons">
+                        <button id="next-question-btn" class="btn btn-primary btn-large">
+                            ➡️ 다음 문제
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 최종 결과 화면 -->
+        <div id="final-result-screen" class="screen">
+            <div class="container">
+                <div class="final-result-container">
+                    <div class="result-header">
+                        <h2>🎯 퀴즈 완료!</h2>
+                        <div id="final-score-badge" class="score-badge">
+                            <!-- 최종 점수 배지 -->
+                        </div>
+                    </div>
+                    
+                    <div class="result-stats">
+                        <div class="stat-item">
+                            <div class="stat-value" id="final-score">0</div>
+                            <div class="stat-label">정답 수</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value" id="final-total">30</div>
+                            <div class="stat-label">총 문항</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value" id="final-accuracy">0%</div>
+                            <div class="stat-label">정답률</div>
+                        </div>
+                    </div>
+                    
+                    <div class="performance-evaluation">
+                        <div id="performance-grade" class="performance-grade">
+                            <!-- 성과 등급 -->
+                        </div>
+                        <div id="performance-message" class="performance-message">
+                            <!-- 성과 메시지 -->
+                        </div>
+                    </div>
+                    
+                    <div class="wrong-answers" id="wrong-answers-section" style="display: none;">
+                        <h4>📝 복습이 필요한 문제들</h4>
+                        <div id="wrong-answers-list" class="wrong-answers-list">
+                            <!-- 틀린 문제들 목록 -->
+                        </div>
+                    </div>
+                    
+                    <div class="action-buttons">
+                        <button id="restart-quiz-btn" class="btn btn-primary btn-large">
+                            🔄 다시 시작하기
+                        </button>
+                        <button id="share-result-btn" class="btn btn-secondary">
+                            📤 결과 공유하기
+                        </button>
+                    </div>
+                    
+                    <div class="footer-message">
+                        <p>🎓 PMP 자격증 취득을 위해 계속 노력하세요!</p>
+                        <p>💪 지속적인 학습이 성공의 열쇠입니다.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="script.js"></script>
+    
+    <!-- PWA 서비스 워커 등록 -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('sw.js')
+                    .then(registration => {
+                        console.log('SW registered: ', registration);
+                    })
+                    .catch(registrationError => {
+                        console.log('SW registration failed: ', registrationError);
+                    });
+            });
+        }
+    </script>
+</body>
+</html>
