@@ -1,22 +1,100 @@
-/* 기본 설정 및 CSS 변수 */
+/* 기본 설정 및 CSS 변수 - 다크모드 호환 */
 :root {
+    /* 라이트 테마 색상 */
     --primary-color: #2563eb;
     --primary-dark: #1d4ed8;
+    --primary-light: #3b82f6;
     --secondary-color: #64748b;
     --success-color: #10b981;
+    --success-dark: #059669;
     --danger-color: #ef4444;
+    --danger-dark: #dc2626;
     --warning-color: #f59e0b;
+    --warning-dark: #d97706;
+    
+    /* 배경 및 표면 색상 */
     --background-color: #f8fafc;
+    --background-secondary: #f1f5f9;
     --surface-color: #ffffff;
+    --surface-hover: #f8fafc;
+    
+    /* 텍스트 색상 */
     --text-primary: #1e293b;
     --text-secondary: #64748b;
+    --text-tertiary: #94a3b8;
+    --text-inverse: #ffffff;
+    
+    /* 테두리 및 구분선 */
     --border-color: #e2e8f0;
+    --border-color-light: #f1f5f9;
+    --border-color-dark: #cbd5e1;
+    
+    /* 그림자 */
     --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
     --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
     --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+    
+    /* 기타 */
     --border-radius: 12px;
     --border-radius-sm: 8px;
     --transition: all 0.2s ease-in-out;
+}
+
+/* 다크 테마 색상 (시스템 다크모드 감지) */
+@media (prefers-color-scheme: dark) {
+    :root {
+        /* 배경 및 표면 색상 */
+        --background-color: #0f172a;
+        --background-secondary: #1e293b;
+        --surface-color: #1e293b;
+        --surface-hover: #334155;
+        
+        /* 텍스트 색상 */
+        --text-primary: #f1f5f9;
+        --text-secondary: #cbd5e1;
+        --text-tertiary: #94a3b8;
+        --text-inverse: #1e293b;
+        
+        /* 테두리 및 구분선 */
+        --border-color: #334155;
+        --border-color-light: #475569;
+        --border-color-dark: #64748b;
+        
+        /* 기본 색상 다크모드 조정 */
+        --primary-color: #3b82f6;
+        --primary-dark: #2563eb;
+        --success-color: #22c55e;
+        --danger-color: #f87171;
+        --warning-color: #fbbf24;
+        
+        /* 그림자 (다크모드용) */
+        --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.3);
+        --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.3), 0 2px 4px -2px rgb(0 0 0 / 0.2);
+        --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.3), 0 4px 6px -4px rgb(0 0 0 / 0.2);
+    }
+}
+
+/* 강제 다크모드 클래스 (수동 토글용) */
+.dark-mode {
+    --background-color: #0f172a;
+    --background-secondary: #1e293b;
+    --surface-color: #1e293b;
+    --surface-hover: #334155;
+    --text-primary: #f1f5f9;
+    --text-secondary: #cbd5e1;
+    --text-tertiary: #94a3b8;
+    --text-inverse: #1e293b;
+    --border-color: #334155;
+    --border-color-light: #475569;
+    --border-color-dark: #64748b;
+    --primary-color: #3b82f6;
+    --primary-dark: #2563eb;
+    --success-color: #22c55e;
+    --danger-color: #f87171;
+    --warning-color: #fbbf24;
+    --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.3);
+    --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.3), 0 2px 4px -2px rgb(0 0 0 / 0.2);
+    --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.3), 0 4px 6px -4px rgb(0 0 0 / 0.2);
 }
 
 /* 기본 스타일 초기화 */
@@ -332,8 +410,9 @@ body {
 
 .option.selected {
     border-color: var(--primary-color);
-    background-color: #eff6ff;
+    background-color: var(--surface-hover);
     box-shadow: var(--shadow-sm);
+    color: var(--text-primary);
 }
 
 .option-number {
@@ -353,7 +432,7 @@ body {
 
 .option.selected .option-number {
     background-color: var(--primary-color);
-    color: white;
+    color: var(--text-inverse);
 }
 
 .option-text {
@@ -421,7 +500,8 @@ body {
 
 .answer-text.correct {
     border-left-color: var(--success-color);
-    background-color: #f0fdf4;
+    background-color: var(--background-secondary);
+    color: var(--text-primary);
 }
 
 /* 해설 화면 */
@@ -657,4 +737,203 @@ body {
         transform: none;
     }
 }
+
+/* ===========================
+   다크모드 가독성 개선 추가 스타일
+   =========================== */
+
+/* 선택지 개선된 스타일 */
+.option {
+    color: var(--text-primary) !important;
+    transition: all 0.2s ease-in-out;
+}
+
+.option:hover {
+    background: var(--surface-hover);
+    transform: translateY(-1px);
+}
+
+.option.selected {
+    background: var(--surface-hover);
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.15);
+}
+
+.option.correct {
+    background: var(--background-secondary) !important;
+    border-color: var(--success-color) !important;
+    color: var(--text-primary) !important;
+}
+
+.option.correct .option-number {
+    background-color: var(--success-color) !important;
+    color: var(--text-inverse) !important;
+}
+
+.option.incorrect {
+    background: var(--background-secondary) !important;
+    border-color: var(--danger-color) !important;
+    color: var(--text-primary) !important;
+    opacity: 0.7;
+}
+
+.option.incorrect .option-number {
+    background-color: var(--danger-color) !important;
+    color: var(--text-inverse) !important;
+}
+
+/* 해설 섹션 개선 */
+.explanation-container {
+    background: var(--surface-color) !important;
+    color: var(--text-primary) !important;
+}
+
+.explanation-text {
+    background: var(--background-secondary) !important;
+    color: var(--text-primary) !important;
+    border: 1px solid var(--border-color-light);
+}
+
+.explanation-section h4 {
+    color: var(--text-primary) !important;
+    font-weight: 600;
+}
+
+/* 결과 메시지 개선 */
+.result-message {
+    color: var(--text-primary) !important;
+    font-weight: 600;
+}
+
+.result-message.correct {
+    color: var(--success-color) !important;
+}
+
+.result-message.incorrect {
+    color: var(--danger-color) !important;
+}
+
+/* 정답 텍스트 개선 */
+.answer-text {
+    background: var(--background-secondary) !important;
+    color: var(--text-primary) !important;
+}
+
+.answer-text.correct {
+    background: var(--background-secondary) !important;
+    color: var(--text-primary) !important;
+}
+
+/* 버튼 텍스트 명확성 개선 */
+.btn-primary {
+    color: var(--text-inverse) !important;
+    background: var(--primary-color) !important;
+}
+
+.btn-primary:hover {
+    background: var(--primary-dark) !important;
+    color: var(--text-inverse) !important;
+}
+
+.btn-secondary {
+    color: var(--text-primary) !important;
+    background: var(--surface-color) !important;
+    border: 2px solid var(--border-color);
+}
+
+.btn-secondary:hover {
+    background: var(--surface-hover) !important;
+    color: var(--text-primary) !important;
+}
+
+/* 강제 텍스트 명도 보장 */
+.option-text,
+.explanation-text p,
+.explanation-text,
+.answer-text p,
+.answer-text {
+    color: var(--text-primary) !important;
+    background-color: transparent !important;
+}
+
+/* 선택 상태의 대비 개선 */
+.option.selected .option-text {
+    color: var(--text-primary) !important;
+    font-weight: 500;
+}
+
+/* 다크모드 전용 추가 대비 */
+@media (prefers-color-scheme: dark) {
+    .option.selected {
+        background: rgba(59, 130, 246, 0.1) !important;
+        border-color: var(--primary-color);
+    }
+    
+    .option.correct {
+        background: rgba(34, 197, 94, 0.1) !important;
+    }
+    
+    .option.incorrect {
+        background: rgba(248, 113, 113, 0.1) !important;
+    }
+    
+    .explanation-text {
+        background: var(--background-secondary) !important;
+        border-color: var(--border-color);
+    }
+    
+    .answer-text.correct {
+        background: rgba(34, 197, 94, 0.1) !important;
+    }
+}
+
+/* 강제 다크모드 클래스에서도 동일하게 적용 */
+.dark-mode .option.selected {
+    background: rgba(59, 130, 246, 0.1) !important;
+}
+
+.dark-mode .option.correct {
+    background: rgba(34, 197, 94, 0.1) !important;
+}
+
+.dark-mode .option.incorrect {
+    background: rgba(248, 113, 113, 0.1) !important;
+}
+
+.dark-mode .explanation-text {
+    background: var(--background-secondary) !important;
+}
+
+.dark-mode .answer-text.correct {
+    background: rgba(34, 197, 94, 0.1) !important;
+}
+
+/* 브라우저별 호환성 개선 */
+.option *,
+.explanation-container *,
+.answer-text * {
+    color: inherit !important;
+}
+
+/* 접근성 개선 - 포커스 스타일 */
+.option:focus-visible {
+    outline: 2px solid var(--primary-color);
+    outline-offset: 2px;
+}
+
+.btn:focus-visible {
+    outline: 2px solid var(--primary-color);
+    outline-offset: 2px;
+}
+
+/* 안전장치: 모든 텍스트 요소에 강제 색상 적용 */
+body, body * {
+    color: var(--text-primary);
+}
+
+/* 하지만 이미 색상이 지정된 요소들은 유지 */
+.text-primary { color: var(--text-primary) !important; }
+.text-secondary { color: var(--text-secondary) !important; }
+.text-success { color: var(--success-color) !important; }
+.text-danger { color: var(--danger-color) !important; }
+.text-warning { color: var(--warning-color) !important; }
 
